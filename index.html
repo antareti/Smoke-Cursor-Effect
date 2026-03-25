@@ -1,123 +1,163 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smoke Cursor Effect</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smoke Cursor Effect — Оживи свой рабочий стол</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: radial-gradient(circle at center, #ff0000, #7a0000);
-  color: #fff;
-  text-align: center;
-}
+    <style>
+        :root {
+            --gold-gradient: linear-gradient(180deg, #ffd700, #b8860b);
+            --bg-gradient: radial-gradient(circle at center, #2c0000 0%, #000000 100%);
+        }
 
-.container {
-  padding: 40px 20px;
-}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.5;
+        }
 
-img {
-  width: 300px;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-  margin: 30px auto;
-  display: block;
-}
+        .container {
+            padding: 60px 20px;
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out;
+        }
 
-/* ЗОЛОТОЙ 3D ТЕКСТ */
-.title {
-  font-size: 48px;
-  font-weight: bold;
-  background: linear-gradient(180deg, #ffd700, #b8860b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow:
-    2px 2px 0 #8b7500,
-    4px 4px 0 #5a4a00,
-    6px 6px 10px rgba(0,0,0,0.6);
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.subtitle {
-  font-size: 20px;
-  max-width: 700px;
-  margin: 20px auto;
-  line-height: 1.6;
-}
+        .title {
+            font-size: clamp(32px, 8vw, 56px);
+            font-weight: 900;
+            text-transform: uppercase;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-.card {
-  background: rgba(0,0,0,0.4);
-  border-radius: 20px;
-  padding: 30px;
-  margin: 30px auto;
-  max-width: 700px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
+        .preview-img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(255, 0, 0, 0.2);
+            margin: 40px auto;
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.price {
-  font-size: 36px;
-  color: gold;
-  margin: 20px 0;
-  text-shadow: 0 0 10px rgba(255,215,0,0.8);
-}
+        .subtitle {
+            font-size: 18px;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            text-align: left;
+        }
 
-.btn {
-  display: inline-block;
-  padding: 15px 35px;
-  font-size: 18px;
-  background: linear-gradient(180deg, #ffd700, #b8860b);
-  color: #000;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: bold;
-  box-shadow: 0 5px 20px rgba(255,215,0,0.6);
-  transition: 0.3s;
-}
+        .card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 30px;
+            padding: 40px;
+            margin-top: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
 
-.btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(255,215,0,0.9);
-}
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
 
-footer {
-  margin-top: 40px;
-  padding: 20px;
-  color: #ddd;
-}
-</style>
+        .features-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 25px 0;
+            text-shadow: 0 0 20px rgba(255,215,0,0.4);
+        }
+
+        .btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            padding: 18px 50px;
+            font-size: 20px;
+            background: var(--gold-gradient);
+            color: #000;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(184, 134, 11, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,215,0,0.6);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
+    <h1 class="title">Smoke Cursor</h1>
 
-  <div class="title">Smoke Cursor Effect</div>
+    <!-- ВИДЕО ПРЕВЬЮ -->
+    <video class="preview-img" autoplay loop muted playsinline>
+        <source src="preview.mp4" type="video/mp4">
+    </video>
 
-  <img src="1.jpg" alt="preview">
+    <div class="card">
+        <div class="subtitle">
+            <p><strong>💨 Эффект дыма на Python (PyQt6)</strong></p>
+            <p>Хочешь сделать свой рабочий стол живым? Этот проект создает магический шлейф, который плавно следует за каждым движением твоей мыши.</p>
+            
+            <ul class="features-list">
+                <li>✨ Плавная анимация частиц</li>
+                <li>🎨 Динамическая смена цветов</li>
+                <li>🪟 Работает поверх всех окон</li>
+                <li>🖱️ Не мешает работе и кликам</li>
+                <li>🚀 Минимальное потребление ресурсов</li>
+            </ul>
+        </div>
 
-  <div class="card">
-    <div class="subtitle">
-      💨 Эффект дыма за курсором на Python (PyQt6)<br><br>
-      Хочешь сделать свой рабочий стол живым и необычным? Этот проект создаёт красивый эффект дыма, который следует за курсором в реальном времени.<br><br>
-      📌 Возможности:<br>
-      — Дым под курсором<br>
-      — Случайные цвета 🎨<br>
-      — Плавная анимация и исчезновение<br>
-      — Работает поверх окон<br>
-      — Не мешает кликам<br><br>
-      🧠 Минимализм + эффект = выглядит дорого 😎
+        <div class="price">$1</div>
+
+        <a href="https://t.me/+cakswAC6-pw1MTgy" class="btn">ПОЛУЧИТЬ ДОСТУП</a>
     </div>
-
-    <div class="price">$1</div>
-
-    <a href="https://t.me/+cakswAC6-pw1MTgy" class="btn">КУПИТЬ</a>
-  </div>
-
 </div>
 
 <footer>
-© 2026 Smoke Effect
+    © 2026 SMOKE EFFECT • PREMIUM DESKTOP UTILITY
 </footer>
 
 </body>
