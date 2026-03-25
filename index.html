@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smoke Cursor Effect</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: radial-gradient(circle at center, #ff0000, #7a0000);
+  color: #fff;
+  text-align: center;
+}
+
+.container {
+  padding: 40px 20px;
+}
+
+img {
+  width: 300px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  margin: 30px auto;
+  display: block;
+}
+
+/* ЗОЛОТОЙ 3D ТЕКСТ */
+.title {
+  font-size: 48px;
+  font-weight: bold;
+  background: linear-gradient(180deg, #ffd700, #b8860b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    2px 2px 0 #8b7500,
+    4px 4px 0 #5a4a00,
+    6px 6px 10px rgba(0,0,0,0.6);
+}
+
+.subtitle {
+  font-size: 20px;
+  max-width: 700px;
+  margin: 20px auto;
+  line-height: 1.6;
+}
+
+.card {
+  background: rgba(0,0,0,0.4);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px auto;
+  max-width: 700px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.price {
+  font-size: 36px;
+  color: gold;
+  margin: 20px 0;
+  text-shadow: 0 0 10px rgba(255,215,0,0.8);
+}
+
+.btn {
+  display: inline-block;
+  padding: 15px 35px;
+  font-size: 18px;
+  background: linear-gradient(180deg, #ffd700, #b8860b);
+  color: #000;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 5px 20px rgba(255,215,0,0.6);
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255,215,0,0.9);
+}
+
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  color: #ddd;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="title">Smoke Cursor Effect</div>
+
+  <img src="1.jpg" alt="preview">
+
+  <div class="card">
+    <div class="subtitle">
+      💨 Эффект дыма за курсором на Python (PyQt6)<br><br>
+      Хочешь сделать свой рабочий стол живым и необычным? Этот проект создаёт красивый эффект дыма, который следует за курсором в реальном времени.<br><br>
+      📌 Возможности:<br>
+      — Дым под курсором<br>
+      — Случайные цвета 🎨<br>
+      — Плавная анимация и исчезновение<br>
+      — Работает поверх окон<br>
+      — Не мешает кликам<br><br>
+      🧠 Минимализм + эффект = выглядит дорого 😎
+    </div>
+
+    <div class="price">$1</div>
+
+    <a href="#" class="btn">КУПИТЬ</a>
+  </div>
+
+</div>
+
+<footer>
+© 2026 Smoke Effect
+</footer>
+
+</body>
+</html>
