@@ -15,11 +15,13 @@
             --bg-dark: #050505;
             --card-bg: rgba(20, 20, 20, 0.6);
             --accent-gradient: linear-gradient(135deg, #fff3b0 0%, #ffcc00 50%, #ff9500 100%);
+            --laptop-body: #222;
+            --laptop-screen-border: #111;
         }
 
         * {
             box-sizing: border-box;
-            cursor: none; /* Прячем стандартный курсор для кастомного */
+            cursor: none; /* Скрываем стандартный курсор */
         }
 
         body {
@@ -45,7 +47,7 @@
             border-radius: 50%;
             background: var(--accent-gradient);
             filter: blur(80px);
-            opacity: 0.15;
+            opacity: 0.1;
             animation: float 20s infinite alternate;
         }
 
@@ -59,6 +61,7 @@
             width: 8px; height: 8px; background: #fff;
             position: fixed; pointer-events: none; z-index: 9999;
             border-radius: 50%; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
         #cursor-outline {
             width: 40px; height: 40px; border: 2px solid var(--gold);
@@ -66,6 +69,10 @@
             border-radius: 50%; transform: translate(-50%, -50%);
             transition: all 0.1s ease-out;
         }
+
+        /* Эффект при нажатии */
+        body.mousedown #cursor-dot { width: 20px; height: 20px; background-color: var(--gold); }
+        body.mousedown #cursor-outline { width: 15px; height: 15px; border-width: 4px; }
 
         /* --- Layout --- */
         .container {
@@ -77,15 +84,14 @@
 
         .header-section {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 1s ease;
+            animation: fadeIn 1s forwards 0.2s;
         }
 
-        .header-section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .badge {
@@ -114,28 +120,68 @@
             line-height: 0.9;
         }
 
-        /* --- 3D Preview Card --- */
-        .preview-wrapper {
-            perspective: 2000px;
-            margin: 60px auto;
-            max-width: 800px;
-        }
-
-        .preview-content {
-            background: var(--card-bg);
-            border-radius: 30px;
-            padding: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            transform-style: preserve-3d;
-            transition: transform 0.2s;
-        }
-
-        .preview-video {
+        /* --- 3D Laptop Preview --- */
+        .laptop-container {
+            perspective: 2500px;
+            margin: 40px auto 100px;
             width: 100%;
-            border-radius: 20px;
+            max-width: 900px;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1.2s forwards 0.5s;
+        }
+
+        .laptop {
+            width: 100%;
+            padding-bottom: 60%; /* Aspect Ratio */
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(-15deg);
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Экран (верхняя крышка) */
+        .laptop-screen {
+            position: absolute;
+            top: 0; left: 10%; width: 80%; height: 80%;
+            background: var(--laptop-body);
+            border: 12px solid var(--laptop-screen-border);
+            border-radius: 15px 15px 0 0;
+            transform-origin: bottom;
+            transform: rotateX(-5deg);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        /* Поверхность монитора (где дым) */
+        #smokeCanvas {
+            width: 100%;
+            height: 100%;
+            background: #000; /* Цвет рабочего стола ноутбука */
             display: block;
-            filter: contrast(1.1);
+        }
+
+        /* Корпус (клавиатура) */
+        .laptop-body {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 25%;
+            background: #333;
+            background: linear-gradient(to bottom, #333 0%, #111 100%);
+            border-radius: 0 0 15px 15px;
+            transform: rotateX(70deg);
+            transform-origin: top;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+        }
+
+        /* Тачпад */
+        .laptop-body::after {
+            content: '';
+            position: absolute;
+            top: 20%; left: 35%; width: 30%; height: 40%;
+            background: #222;
+            border-radius: 5px;
+            border: 1px solid #444;
         }
 
         /* --- Glass Card --- */
@@ -146,9 +192,9 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 40px;
             padding: 60px;
-            margin-top: -100px;
             position: relative;
             z-index: 10;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.4);
         }
 
         .features-grid {
@@ -170,13 +216,14 @@
         .f-item:hover {
             background: rgba(255, 204, 0, 0.05);
             border-color: var(--gold);
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
         }
 
         .f-icon {
             font-size: 32px;
             display: block;
             margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px var(--gold-glow));
         }
 
         /* --- CTA Button --- */
@@ -192,10 +239,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
         }
 
-        .price-value span { font-size: 24px; color: #666; text-decoration: line-through; }
+        .price-value span { font-size: 24px; color: #555; text-decoration: line-through; }
 
         .btn-modern {
             display: inline-flex;
@@ -210,9 +257,8 @@
             font-size: 20px;
             letter-spacing: 1px;
             box-shadow: 0 20px 40px rgba(255, 204, 0, 0.3);
-            transition: all 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
         }
 
         .btn-modern:hover {
@@ -220,18 +266,27 @@
             box-shadow: 0 30px 60px rgba(255, 204, 0, 0.5);
         }
 
+        /* Блик на кнопке */
+        .btn-modern::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+            transform: scale(0); transition: transform 0.6s;
+        }
+        .btn-modern:hover::after { transform: scale(1); }
+
         footer {
             padding: 60px;
             text-align: center;
-            opacity: 0.4;
+            opacity: 0.3;
             font-size: 11px;
             letter-spacing: 4px;
             text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
-            .glass-card { padding: 30px; margin-top: -50px; }
+            .glass-card { padding: 30px; }
             .title { font-size: 40px; }
+            .price-value { font-size: 50px; }
         }
     </style>
 </head>
@@ -247,57 +302,58 @@
 </div>
 
 <div class="container">
-    <div class="header-section" id="header">
-        <span class="badge">V3.0 Production Ready</span>
+    <div class="header-section">
+        <span class="badge">V3.0 Interactive Demo</span>
         <h1 class="title">SMOKE<br>CURSOR</h1>
     </div>
 
-    <div class="preview-wrapper" id="tilt-card">
-        <div class="preview-content">
-            <video class="preview-video" autoplay loop muted playsinline>
-                <source src="preview.mp4" type="video/mp4">
-            </video>
+    <div class="laptop-container">
+        <div class="laptop" id="tiltLaptop">
+            <div class="laptop-screen">
+                <canvas id="smokeCanvas"></canvas>
+            </div>
+            <div class="laptop-body"></div>
         </div>
     </div>
 
     <div class="glass-card">
         <div style="text-align: center;">
-            <h2 style="font-size: 32px; margin: 0;">Ultimate Desktop Aesthetic</h2>
-            <p style="color: #aaa; font-size: 18px; margin-top: 10px;">Профессиональный визуальный движок на базе <span style="color: var(--gold);">Python 3.12</span></p>
+            <h2 style="font-size: 32px; margin: 0; font-weight: 800;">Ultimate Desktop Aesthetic</h2>
+            <p style="color: #aaa; font-size: 18px; margin-top: 10px;">Води мышкой по сайту и смотри на экран ноутбука выше!</p>
         </div>
 
         <div class="features-grid">
             <div class="f-item">
+                <span class="f-icon">🌈</span>
+                <strong>Multi-Color Smoke</strong>
+                <p style="font-size: 13px; color: #888;">Переливающийся шлейф за курсором</p>
+            </div>
+            <div class="f-item">
                 <span class="f-icon">⚡</span>
                 <strong>Zero Lag</strong>
-                <p style="font-size: 13px; color: #888;">Оптимизировано для гейминга (0.1% CPU)</p>
+                <p style="font-size: 13px; color: #888;">Оптимизированный движок (0.1% CPU)</p>
             </div>
             <div class="f-item">
-                <span class="f-icon">🌈</span>
-                <strong>Dynamic RGB</strong>
-                <p style="font-size: 13px; color: #888;">Синхронизация цвета под обои</p>
-            </div>
-            <div class="f-item">
-                <span class="f-icon">🛡️</span>
-                <strong>Safe App</strong>
-                <p style="font-size: 13px; color: #888;">Без доступа к сети и инъекций в процессы</p>
+                <span class="f-icon">⚙️</span>
+                <strong>Fully Customizable</strong>
+                <p style="font-size: 13px; color: #888;">Настройка длины, цвета и плотности</p>
             </div>
         </div>
 
         <div class="cta-box">
             <div class="price-value"><span>$10</span> $1</div>
-            <a href="https://t.me/+cakswAC6-pw1MTgy" class="btn-modern">КУПИТЬ LICENSE KEY</a>
-            <p style="margin-top: 20px; color: #555; font-size: 12px;">Instant Delivery via Telegram Bot</p>
+            <a href="https://t.me/+cakswAC6-pw1MTgy" class="btn-modern">ПОЛУЧИТЬ LICENSE KEY</a>
+            <p style="margin-top: 20px; color: #555; font-size: 12px;">Мгновенная доставка ключа</p>
         </div>
     </div>
 </div>
 
 <footer>
-    Smoke Effect Labs &copy; 2026 • Design by Gemini
+    Smoke Effect Labs &copy; 2026 • Real-time Canvas Render
 </footer>
 
 <script>
-    // --- Custom Cursor Logic ---
+    // 1. Логика кастомного курсора
     const dot = document.getElementById('cursor-dot');
     const outline = document.getElementById('cursor-outline');
 
@@ -308,38 +364,118 @@
         dot.style.left = `${posX}px`;
         dot.style.top = `${posY}px`;
 
+        // Плавное следование контура
         outline.animate({
             left: `${posX}px`,
             top: `${posY}px`
-        }, { duration: 500, fill: "forwards" });
+        }, { duration: 400, fill: "forwards", easing: "ease-out" });
     });
 
-    // --- 3D Tilt Effect ---
-    const card = document.getElementById('tilt-card');
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
+    // Эффекты при клике
+    window.addEventListener('mousedown', () => document.body.classList.add('mousedown'));
+    window.addEventListener('mouseup', () => document.body.classList.remove('mousedown'));
 
-        card.querySelector('.preview-content').style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+    // 2. 3D Tilt эффект для ноутбука
+    const laptop = document.getElementById('tiltLaptop');
+    window.addEventListener('mousemove', (e) => {
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+        
+        // Вычисляем углы наклона на основе положения мыши на всем экране
+        const rotateY = (x - 0.5) * 30; // от -15 до 15 градусов
+        const rotateX = (0.5 - y) * 15 + 10; // наклон корпуса
+
+        laptop.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
 
-    card.addEventListener('mouseleave', () => {
-        card.querySelector('.preview-content').style.transform = `rotateX(0deg) rotateY(0deg)`;
+
+    // 3. Интерактивный разноцветный дым на холсте ноутбука
+    const canvas = document.getElementById('smokeCanvas');
+    const ctx = canvas.getContext('2d');
+    const laptopScreen = canvas.parentElement;
+
+    // Устанавливаем реальное разрешение холста
+    function resizeCanvas() {
+        canvas.width = laptopScreen.clientWidth;
+        canvas.height = laptopScreen.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let particles = [];
+    let hue = 0; // Для переливания цветов
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 3 + 1; // Размер частицы
+            this.speedX = Math.random() * 1 - 0.5;
+            this.speedY = Math.random() * 1 - 0.5;
+            this.color = `hsl(${hue}, 100%, 50%)`;
+            this.life = 1; // Жизнь частицы (от 1 до 0)
+            this.decay = Math.random() * 0.02 + 0.005; // Скорость угасания
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.size > 0.1) this.size -= 0.03;
+            this.life -= this.decay;
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.life; // Прозрачность зависит от жизни
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    // Обработка движения мыши для рисования на холсте
+    window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        
+        // Вычисляем координаты мыши относительно холста ноутбука
+        // e.clientX/Y - позиция на реальном экране
+        // rect.left/top - позиция холста на реальном экране
+        // scale - поправка, если CSS растянул холст
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        const canvasX = (e.clientX - rect.left) * scaleX;
+        const canvasY = (e.clientY - rect.top) * scaleY;
+
+        // Создаем частицы только если мышь находится в пределах экрана ноутбука
+        if (canvasX >= 0 && canvasX <= canvas.width && canvasY >= 0 && canvasY <= canvas.height) {
+            for (let i = 0; i < 3; i++) { // Создаем 3 частицы за раз
+                particles.push(new Particle(canvasX, canvasY));
+            }
+            hue += 2; // Меняем цвет
+        }
     });
 
-    // --- Reveal Animation ---
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1 });
+    // Анимационный цикл
+    function animateSmoke() {
+        // Очищаем холст с небольшим хвостом (для эффекта дыма)
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    observer.observe(document.getElementById('header'));
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+
+            // Удаляем мертвые частицы
+            if (particles[i].life <= 0) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animateSmoke);
+    }
+    animateSmoke();
+
 </script>
 
 </body>
